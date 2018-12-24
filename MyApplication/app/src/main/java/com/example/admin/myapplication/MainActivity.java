@@ -65,31 +65,31 @@ public class MainActivity extends AppCompatActivity {
             imgbtn.setBackgroundResource(R.drawable.fly_no);
         }
     }
-    public boolean onTouchEvent(MotionEvent event) {
-
-//获得触摸的坐标
-        float x = event.getX();
-        float y = event.getY();
-        switch (event.getAction())
-        {
-//触摸屏幕时刻
-            case MotionEvent.ACTION_DOWN:
-              TextView tv1=  findViewById(R.id.txtdow);
-              tv1.setText(x+","+y);
-                break;
-//触摸并移动时刻
-            case MotionEvent.ACTION_MOVE:
-                TextView tv2=  findViewById(R.id.txtmove);
-                tv2.setText(x+","+y);
-                break;
-//终止触摸时刻
-            case MotionEvent.ACTION_UP:
-                TextView tv3=  findViewById(R.id.txtup);
-                tv3.setText(x+","+y);
-                break;
-        }
-        return true;
-    }
+//    public boolean onTouchEvent(MotionEvent event) {
+//
+////获得触摸的坐标
+//        float x = event.getX();
+//        float y = event.getY();
+//        switch (event.getAction())
+//        {
+////触摸屏幕时刻
+//            case MotionEvent.ACTION_DOWN:
+//              TextView tv1=  findViewById(R.id.txtdow);
+//              tv1.setText(x+","+y);
+//                break;
+////触摸并移动时刻
+//            case MotionEvent.ACTION_MOVE:
+//                TextView tv2=  findViewById(R.id.txtmove);
+//                tv2.setText(x+","+y);
+//                break;
+////终止触摸时刻
+//            case MotionEvent.ACTION_UP:
+//                TextView tv3=  findViewById(R.id.txtup);
+//                tv3.setText(x+","+y);
+//                break;
+//        }
+//        return true;
+//    }
 
 
 //    public void initrokerview(){

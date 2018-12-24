@@ -99,17 +99,6 @@
                 android:textColor="#FFFFFF"
                 android:text="0m/s" />
 
-            <TextView
-                android:id="@+id/txttest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginEnd="175dp"
-                android:layout_marginBottom="19dp"
-                android:textColor="#FFFFFF"
-                android:text="TextView" />
-
         </RelativeLayout>
 
         <LinearLayout
@@ -172,36 +161,6 @@
 
                 android:layout_weight="1">
 
-                <TextView
-                    android:id="@+id/txtdow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="226dp"
-                    android:layout_marginEnd="17dp"
-                    android:textColor="#FFFFFF"
-                    android:text="TextView" />
-
-                <TextView
-                    android:id="@+id/txtmove"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/txtdow"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="45dp"
-                    android:textColor="#FFFFFF"
-                    android:text="TextView" />
-
-                <TextView
-                    android:id="@+id/txtup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignStart="@+id/txtdow"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="11dp"
-                    android:textColor="#FFFFFF"
-                    android:text="TextView" />
             </RelativeLayout>
 
             <RelativeLayout

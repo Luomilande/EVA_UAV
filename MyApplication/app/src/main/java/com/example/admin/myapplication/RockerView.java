@@ -282,15 +282,15 @@ public class RockerView extends View {
                 callBackStart();
                 case MotionEvent.ACTION_POINTER_DOWN:
             case MotionEvent.ACTION_MOVE:// 移动
-                tuo++;
-                map.put(tuo,event.getActionIndex());
+//                tuo++;
+//                map.put(tuo,event.getActionIndex());
                 float moveX = event.getX();
                 float moveY = event.getY();
-                if (primary_x==0&&primary_y==0)
-                {
-                    primary_y=moveY;
-                    primary_x=moveX;
-                }
+//                if (primary_x==0&&primary_y==0)
+//                {
+//                    primary_y=moveY;
+//                    primary_x=moveX;
+//                }
                 baseDistance = mAreaRadius+2;
                 Log.d("baseDistance",baseDistance+"");
                 mRockerPosition = getRockerPositionPoint(mCenterPoint, new Point((int) moveX, (int) moveY), mAreaRadius + mRockerRadius, mRockerRadius);
@@ -350,7 +350,7 @@ public class RockerView extends View {
             int showPointY = (int) (centerPoint.y + (regionRadius - rockerRadius) * Math.sin(radian));
 
             callBack(angle, (int) Math.sqrt((showPointX - centerPoint.x) * (showPointX - centerPoint.x) + (showPointY - centerPoint.y) * (showPointY - centerPoint.y)));
-            return new Point(100, 0);
+            return new Point(showPointX, showPointY);
         }
     }
 
