@@ -70,10 +70,25 @@ public class MainActivity extends AppCompatActivity {
             imgbtn.setBackgroundResource(R.drawable.fly_no);
         }
     }
-
+//    @Override
+//    protected  void onDestroy()
+//    {
+//        super.onDestroy();
+//        ReleasePlayer();
+//    }
+    private void ReleasePlayer()
+    {
+        if (mp != null && mp.isPlaying()) {
+            mp.stop();
+            //关键语句
+            mp.reset();
+            mp.release();
+            mp = null;
+        }
+    }
 
     public void init(){
-
+        ReleasePlayer();
         switch (info)
         {
             case "背景":
@@ -110,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
         {
             mp.start();
         }
+
     }
 //    public boolean onTouchEvent(MotionEvent event) {
 //
