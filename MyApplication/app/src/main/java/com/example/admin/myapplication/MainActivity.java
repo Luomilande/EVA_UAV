@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -23,39 +24,41 @@ import java.io.IOException;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-    MediaPlayer mp;
+    MediaPlayer mp;//定义MediaPlayer
+    public String info;//记录需要触发语音的类型
     private boolean run = false;
     private final Handler handler = new Handler();
     private int a=1,b=1;
-    public String info;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initrokerview();
         run = true;
-        handler.postDelayed(task, 3000);
+       // handler.postDelayed(task, 3000);
+
     }
-    private final Runnable task = new Runnable() {
-        @Override
-        public void run() {
-            if(run){
-                TextView tev=findViewById(R.id.textView2);
-                int min=1;
-                int max=70;
-                Random random = new Random();
-                int num = random.nextInt(max)%(max-min+1)+min;
-                if(num>=60) tev.setTextColor(Color.parseColor("#FF3030"));
-                if(20<=num&&num<60) tev.setTextColor(Color.parseColor("#1E90FF"));
-                if(num<20) tev.setTextColor(Color.parseColor("#66CD00"));
-                VerticalSeekBar seekBar=(VerticalSeekBar)findViewById(R.id.verticalSeekBar);
-
-                tev.setText(String.valueOf(num+"m/s"));
-
-                handler.postDelayed(this,1000);
-            }
-        }
-    };
+//    private final Runnable task = new Runnable() {
+//        @Override
+//        public void run() {
+//            if(run){
+//                TextView tev=findViewById(R.id.textView2);
+//                int min=1;
+//                int max=70;
+//                Random random = new Random();
+//                int num = random.nextInt(max)%(max-min+1)+min;
+//                if(num>=60) tev.setTextColor(Color.parseColor("#FF3030"));
+//                if(20<=num&&num<60) tev.setTextColor(Color.parseColor("#1E90FF"));
+//                if(num<20) tev.setTextColor(Color.parseColor("#66CD00"));
+//                VerticalSeekBar seekBar=(VerticalSeekBar)findViewById(R.id.verticalSeekBar);
+//
+//                tev.setText(String.valueOf(num+"m/s"));
+//
+//                handler.postDelayed(this,1000);
+//            }
+//        }
+//    };
     public void onTouch(View view)
     {
         ImageButton imgbtn=findViewById(R.id.imageButton2);
@@ -76,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 //        super.onDestroy();
 //        ReleasePlayer();
 //    }
+    //释放播放资源
     private void ReleasePlayer()
     {
         if (mp != null && mp.isPlaying()) {
@@ -86,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             mp = null;
         }
     }
-
+    //音频预备以及播放
     public void init(){
         ReleasePlayer();
         switch (info)
@@ -230,5 +234,7 @@ public class MainActivity extends AppCompatActivity {
             sxbtn.setBackgroundResource(R.drawable.shexiang);
         }
     }
+
+
 
 }
