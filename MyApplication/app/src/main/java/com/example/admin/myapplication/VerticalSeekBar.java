@@ -12,7 +12,7 @@ import android.widget.SeekBar;
  * 从底部开始
  *
  */
-public class VerticalSeekBar extends SeekBar
+public class VerticalSeekBar extends android.support.v7.widget.AppCompatSeekBar
 {
 	private boolean mIsDragging;
     private float mTouchDownY;

@@ -34,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initrokerview();
-        run = true;
-       // handler.postDelayed(task, 3000);
+       // initrokerview();
+        //run = true;
+       //handler.postDelayed(task, 3000);
 
     }
 //    private final Runnable task = new Runnable() {
@@ -59,20 +59,20 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        }
 //    };
-    public void onTouch(View view)
-    {
-        ImageButton imgbtn=findViewById(R.id.imageButton2);
-        if (a==1)
-        {
-            a++;
-            imgbtn.setBackgroundResource(R.drawable.fly);
-        }
-        else
-        {
-            a--;
-            imgbtn.setBackgroundResource(R.drawable.fly_no);
-        }
-    }
+//    public void onTouch(View view)
+//    {
+//        ImageButton imgbtn=findViewById(R.id.imageButton2);
+//        if (a==1)
+//        {
+//            a++;
+//            imgbtn.setBackgroundResource(R.drawable.fly);
+//        }
+//        else
+//        {
+//            a--;
+//            imgbtn.setBackgroundResource(R.drawable.fly_no);
+//        }
+//    }
 //    @Override
 //    protected  void onDestroy()
 //    {
@@ -158,82 +158,82 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
 
-    public void initrokerview(){
-        //找到RockerView控件
-        RockerView roker=(RockerView) findViewById(R.id.RockerView);
-        //实时监测摇动方向
-        roker.setOnShakeListener(DirectionMode.DIRECTION_8, new OnShakeListener() {
-            //开始摇动时要执行的代码写在本方法里
-            @Override
-            public void onStart() {
-
-            }
-            //结束摇动时要执行的代码写在本方法里
-            @Override
-            public void onFinish() {
-                info=null;
-                //Toast.makeText(MainActivity.this, "已复位", Toast.LENGTH_SHORT).show();
-            }
-            //摇动方向时要执行的代码写在本方法里
-            @Override
-            public void direction(Direction direction) {
-                if (direction == RockerView.Direction.DIRECTION_CENTER){
-                    //tv.setText("中心");
-                }else if (direction == RockerView.Direction.DIRECTION_DOWN){
-                    //tv.setText("下");
-                    if (info!="后")
-                    {
-                        info="后";
-                        init();
-                    }
-                }else if (direction == RockerView.Direction.DIRECTION_LEFT){
-                    //tv.setText("左");
-                    if (info!="左")
-                    {
-                        info="左";
-                        init();
-                    }
-                }else if (direction == RockerView.Direction.DIRECTION_UP){
-                    //tv.setText("上");
-                    if (info!="前")
-                    {
-                        info="前";
-                        init();
-                    }
-                }else if (direction == RockerView.Direction.DIRECTION_RIGHT){
-                    //tv.setText("右");
-                    if (info!="右")
-                    {
-                        info="右";
-                        init();
-                    }
-                }else if (direction == RockerView.Direction.DIRECTION_DOWN_LEFT){
-                    //tv.setText("左下");
-                }else if (direction == RockerView.Direction.DIRECTION_DOWN_RIGHT){
-                    //tv.setText("右下");
-                }else if (direction == RockerView.Direction.DIRECTION_UP_LEFT){
-                    //tv.setText("左上");
-                }else if (direction == RockerView.Direction.DIRECTION_UP_RIGHT){
-                    //tv.setText("右上");
-                }
-
-            }
-        });
-    }
-    public void sxTouch(View view)
-    {
-        ImageButton sxbtn= findViewById(R.id.lximgbtn);
-        if (b==1)
-        {
-            b++;
-            sxbtn.setBackgroundResource(R.drawable.shexiang2);
-        }
-        else
-        {
-            b--;
-            sxbtn.setBackgroundResource(R.drawable.shexiang);
-        }
-    }
+//    public void initrokerview(){
+//        //找到RockerView控件
+//        RockerView roker=(RockerView) findViewById(R.id.RockerView);
+//        //实时监测摇动方向
+//        roker.setOnShakeListener(DirectionMode.DIRECTION_8, new OnShakeListener() {
+//            //开始摇动时要执行的代码写在本方法里
+//            @Override
+//            public void onStart() {
+//
+//            }
+//            //结束摇动时要执行的代码写在本方法里
+//            @Override
+//            public void onFinish() {
+//                info=null;
+//                //Toast.makeText(MainActivity.this, "已复位", Toast.LENGTH_SHORT).show();
+//            }
+//            //摇动方向时要执行的代码写在本方法里
+//            @Override
+//            public void direction(Direction direction) {
+//                if (direction == RockerView.Direction.DIRECTION_CENTER){
+//                    //tv.setText("中心");
+//                }else if (direction == RockerView.Direction.DIRECTION_DOWN){
+//                    //tv.setText("下");
+//                    if (info!="后")
+//                    {
+//                        info="后";
+//                        init();
+//                    }
+//                }else if (direction == RockerView.Direction.DIRECTION_LEFT){
+//                    //tv.setText("左");
+//                    if (info!="左")
+//                    {
+//                        info="左";
+//                        init();
+//                    }
+//                }else if (direction == RockerView.Direction.DIRECTION_UP){
+//                    //tv.setText("上");
+//                    if (info!="前")
+//                    {
+//                        info="前";
+//                        init();
+//                    }
+//                }else if (direction == RockerView.Direction.DIRECTION_RIGHT){
+//                    //tv.setText("右");
+//                    if (info!="右")
+//                    {
+//                        info="右";
+//                        init();
+//                    }
+//                }else if (direction == RockerView.Direction.DIRECTION_DOWN_LEFT){
+//                    //tv.setText("左下");
+//                }else if (direction == RockerView.Direction.DIRECTION_DOWN_RIGHT){
+//                    //tv.setText("右下");
+//                }else if (direction == RockerView.Direction.DIRECTION_UP_LEFT){
+//                    //tv.setText("左上");
+//                }else if (direction == RockerView.Direction.DIRECTION_UP_RIGHT){
+//                    //tv.setText("右上");
+//                }
+//
+//            }
+//        });
+//    }
+//    public void sxTouch(View view)
+//    {
+//        ImageButton sxbtn= findViewById(R.id.lximgbtn);
+//        if (b==1)
+//        {
+//            b++;
+//            sxbtn.setBackgroundResource(R.drawable.shexiang2);
+//        }
+//        else
+//        {
+//            b--;
+//            sxbtn.setBackgroundResource(R.drawable.shexiang);
+//        }
+//    }
 
 
 

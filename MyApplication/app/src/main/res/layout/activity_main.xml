@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:background="@drawable/bj"
-
     android:weightSum="8">
 
 
@@ -14,38 +12,41 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical"
-
-        >
+        android:weightSum="10"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true">
-
-            <com.example.admin.myapplication.VerticalSeekBar
-                android:id="@+id/verticalSeekBar"
-                android:layout_width="wrap_content"
-                android:layout_height="316dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:paddingTop="0dp"
-                android:paddingEnd="0dp"
-                android:progressDrawable="@drawable/ym_seekbar"
-                android:thumb="@null">
-
-            </com.example.admin.myapplication.VerticalSeekBar>
+            android:layout_height="0dp"
+         android:layout_weight="1"
+            >
 
             <ImageButton
                 android:id="@+id/imgbtnfanhui"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_alignStart="@+id/verticalSeekBar"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="12dp"
+                android:layout_centerInParent="true"
                 android:background="@drawable/fanhui" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignParentStart="true"
+            android:layout_weight="9"
+            >
+
+            <com.example.admin.myapplication.VerticalSeekBar
+                android:id="@+id/verticalSeekBar"
+                android:layout_width="wrap_content"
+                android:layout_height="350dp"
+                android:layout_centerInParent="true"
+                android:progressDrawable="@drawable/ym_seekbar"
+                android:thumbOffset="0dp"
+                android:thumb="@null">
+
+            </com.example.admin.myapplication.VerticalSeekBar>
+
         </RelativeLayout>
 
     </LinearLayout>
@@ -59,63 +60,62 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-
             android:layout_height="0dp"
             android:layout_weight="1"
             android:background="#10FFFFFF">
 
-            <ImageButton
-                android:id="@+id/imageButton2"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="80dp"
-                android:background="@drawable/fly_no"
-                android:onClick="onTouch" />
+            <!--<ImageButton-->
+                <!--android:id="@+id/imageButton2"-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginEnd="80dp"-->
+                <!--android:background="@drawable/fly_no"-->
+                <!--android:onClick="onTouch" />-->
 
-            <ImageButton
-                android:id="@+id/imageButton3"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="20dp"
-                android:background="@drawable/battery_btn" />
+            <!--<ImageButton-->
+                <!--android:id="@+id/imageButton3"-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginStart="20dp"-->
+                <!--android:background="@drawable/battery_btn" />-->
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/imageButton2"
-                android:layout_toLeftOf="@id/txtshuiping"
-                android:text="速度:"
-                android:textColor="#FFFFFF" />
+            <!--<TextView-->
+                <!--android:id="@+id/textView"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignBottom="@id/imageButton2"-->
+                <!--android:layout_toLeftOf="@id/txtshuiping"-->
+                <!--android:text="速度:"-->
+                <!--android:textColor="#FFFFFF" />-->
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/imageButton2"
-                android:layout_toRightOf="@id/txtshuiping"
-                android:text="0m/s"
-                android:textColor="#FFFFFF" />
+            <!--<TextView-->
+                <!--android:id="@+id/textView2"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignBottom="@+id/imageButton2"-->
+                <!--android:layout_toRightOf="@id/txtshuiping"-->
+                <!--android:text="0m/s"-->
+                <!--android:textColor="#FFFFFF" />-->
 
-            <ImageButton
-                android:id="@+id/imgbtnwifi"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignTop="@+id/imageButton2"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/wifi" />
+            <!--<ImageButton-->
+                <!--android:id="@+id/imgbtnwifi"-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:layout_alignTop="@id/imageButton2"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginEnd="20dp"-->
+                <!--android:background="@drawable/wifi" />-->
 
-            <TextView
-                android:id="@+id/txtshuiping"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="1dp" />
+            <!--<TextView-->
+                <!--android:id="@+id/txtshuiping"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:layout_marginBottom="1dp" />-->
 
         </RelativeLayout>
 
@@ -186,52 +186,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:splitMotionEvents="false"
-
                 >
 
-                <!--<Button-->
-                <!--android:id="@+id/button2"-->
-                <!--android:layout_width="40dp"-->
-                <!--android:layout_height="40dp"-->
-                <!--android:layout_centerInParent="true"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:background="#00000000"-->
-                <!--android:enabled="false"-->
-                <!--android:text="Button" />-->
-
-                <!--<ImageButton-->
-                <!--android:id="@+id/imageButton"-->
-                <!--android:layout_width="100dp"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:layout_above="@id/button2"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:background="@drawable/xq_btn" />-->
-
-                <!--<ImageButton-->
-                <!--android:id="@+id/imageButton8"-->
-                <!--android:layout_width="50dp"-->
-                <!--android:layout_height="100dp"-->
-                <!--android:layout_centerInParent="true"-->
-                <!--android:layout_toLeftOf="@id/button2"-->
-                <!--android:background="@drawable/xz_btn" />-->
-
-                <!--<ImageButton-->
-                <!--android:id="@+id/imageButton9"-->
-                <!--android:layout_width="100dp"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:layout_below="@id/button2"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--android:background="@drawable/xh_btn" />-->
-
-                <!--<ImageButton-->
-                <!--android:id="@+id/imageButton10"-->
-                <!--android:layout_width="50dp"-->
-                <!--android:layout_height="100dp"-->
-                <!--android:layout_toRightOf="@id/button2"-->
-                <!--android:layout_centerInParent="true"-->
-                <!--android:background="@drawable/xy_btn" />-->
-                <!--&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
                 <com.example.admin.myapplication.RockerView
                     android:id="@+id/RockerView"
                     android:layout_width="150dp"
@@ -253,73 +209,6 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical">
-        <!--<ImageButton-->
-        <!--android:id="@+id/pzButton"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_below="@id/button"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:background="@drawable/pz_btn" />-->
-        <!--<ImageButton-->
-        <!--android:id="@+id/pzButton1"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_below="@id/button"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:background="@drawable/pz_btn" />-->
-        <!--<ImageButton-->
-        <!--android:id="@+id/pzButton2"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_below="@id/button"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:background="@drawable/pz_btn" />-->
-
-        <!--<ImageButton-->
-        <!--android:id="@+id/pzButton3"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_below="@id/button"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:background="@drawable/pz_btn" />-->
-        <!--<ImageButton-->
-        <!--android:id="@+id/sxButton"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_marginTop="-175dp"-->
-        <!--android:layout_marginLeft="40dp"-->
-        <!--android:layout_below="@id/button"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:background="@drawable/shexiang"-->
-        <!--android:onClick="sxTouch"-->
-        <!--/>-->
-        <!--<ImageButton-->
-        <!--android:id="@+id/sxButton1"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_marginLeft="40dp"-->
-        <!--android:layout_below="@id/button"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:background="@drawable/sx_btn" />-->
-        <!--<ImageButton-->
-        <!--android:id="@+id/sxButton2"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_marginLeft="40dp"-->
-        <!--android:layout_below="@id/button"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:background="@drawable/sx_btn" />-->
-        <!--<ImageButton-->
-        <!--android:id="@+id/sxButton3"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_marginLeft="40dp"-->
-        <!--android:layout_below="@id/button"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:background="@drawable/sx_btn"-->
-        <!--android:onClick="suijishu"-->
-        <!--/>-->
-
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
