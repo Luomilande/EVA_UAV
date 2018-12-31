@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initdata();
@@ -340,12 +341,16 @@ public class MainActivity extends AppCompatActivity {
        // Thread t=new Thread(new ConnectThread());
        // t.start();
         BluetoothAdapter blueadapter=BluetoothAdapter.getDefaultAdapter();
-        if (blueadapter.isEnabled()){
-            //Toast.makeText(getApplicationContext(),"蓝牙状态：开",Toast.LENGTH_SHORT).show();
+        if (!blueadapter.isEnabled()){
+            blueadapter.enable();
+            Toast.makeText(getApplicationContext(),"蓝牙状态：未开启",Toast.LENGTH_SHORT).show();
+        }else
+        {
+            findViewById(R.id.imgbtn_ly).setBackgroundResource(R.drawable.ly_on);
             new Thread(new ConnectThread()).start();
-        }else{
-            Toast.makeText(getApplicationContext(),"蓝牙状态：关",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"开始连接",Toast.LENGTH_SHORT).show();
         }
+
     }
 
     /**
@@ -368,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
     public void alert_edit(View view){
         final EditText et = new EditText(this);
         new AlertDialog.Builder(this).setTitle("蓝牙MAC地址更改:")
-                .setIcon(android.R.drawable.sym_def_app_icon)
+                .setIcon(R.drawable.sz2)
                 .setView(et)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
