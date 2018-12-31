@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
@@ -39,7 +40,7 @@
             <com.example.admin.myapplication.VerticalSeekBar
                 android:id="@+id/verticalSeekBar"
                 android:layout_width="wrap_content"
-                android:layout_height="350dp"
+                android:layout_height="330dp"
                 android:layout_centerInParent="true"
                 android:progressDrawable="@drawable/ym_seekbar"
                 android:thumbOffset="0dp"
@@ -65,58 +66,74 @@
             android:background="#10FFFFFF">
 
             <!--<ImageButton-->
-                <!--android:id="@+id/imageButton2"-->
-                <!--android:layout_width="50dp"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_marginEnd="80dp"-->
-                <!--android:background="@drawable/fly_no"-->
-                <!--android:onClick="onTouch" />-->
+            <!--android:id="@+id/imageButton2"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginEnd="80dp"-->
+            <!--android:background="@drawable/fly_no"-->
+            <!--android:onClick="onTouch" />-->
 
             <!--<ImageButton-->
-                <!--android:id="@+id/imageButton3"-->
-                <!--android:layout_width="50dp"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_marginStart="20dp"-->
-                <!--android:background="@drawable/battery_btn" />-->
+            <!--android:id="@+id/imageButton3"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginStart="20dp"-->
+            <!--android:background="@drawable/battery_btn" />-->
 
             <!--<TextView-->
-                <!--android:id="@+id/textView"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignBottom="@id/imageButton2"-->
-                <!--android:layout_toLeftOf="@id/txtshuiping"-->
-                <!--android:text="速度:"-->
-                <!--android:textColor="#FFFFFF" />-->
+            <!--android:id="@+id/textView"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignBottom="@id/imageButton2"-->
+            <!--android:layout_toLeftOf="@id/txtshuiping"-->
+            <!--android:text="速度:"-->
+            <!--android:textColor="#FFFFFF" />-->
 
             <!--<TextView-->
-                <!--android:id="@+id/textView2"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignBottom="@+id/imageButton2"-->
-                <!--android:layout_toRightOf="@id/txtshuiping"-->
-                <!--android:text="0m/s"-->
-                <!--android:textColor="#FFFFFF" />-->
+            <!--android:id="@+id/textView2"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignBottom="@+id/imageButton2"-->
+            <!--android:layout_toRightOf="@id/txtshuiping"-->
+            <!--android:text="0m/s"-->
+            <!--android:textColor="#FFFFFF" />-->
 
             <!--<ImageButton-->
-                <!--android:id="@+id/imgbtnwifi"-->
-                <!--android:layout_width="50dp"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:layout_alignTop="@id/imageButton2"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_marginEnd="20dp"-->
-                <!--android:background="@drawable/wifi" />-->
+            <!--android:id="@+id/imgbtnwifi"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_alignTop="@id/imageButton2"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginEnd="20dp"-->
+            <!--android:background="@drawable/wifi" />-->
 
             <!--<TextView-->
-                <!--android:id="@+id/txtshuiping"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--android:layout_marginBottom="1dp" />-->
+            <!--android:id="@+id/txtshuiping"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_marginBottom="1dp" />-->
 
+            <ImageButton
+                android:id="@+id/imgbtnwifi"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/wifi"
+                />
+
+            <ImageButton
+                android:id="@+id/imgbtnfj"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:onClick="btnly"
+                android:background="@drawable/fly" />
         </RelativeLayout>
 
         <LinearLayout
@@ -185,8 +202,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:splitMotionEvents="false"
-                >
+                android:splitMotionEvents="false">
 
                 <com.example.admin.myapplication.RockerView
                     android:id="@+id/RockerView"
@@ -243,7 +259,7 @@
                 android:id="@+id/imgbtnshezhi"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-
+                android:onClick="alert_edit"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
@@ -253,17 +269,19 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/imgbtnyuyin"
-                android:layout_width="60dp"
+                android:id="@+id/imgbtn_ly"
+                android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="44dp"
-                android:background="@drawable/yuyin_off"
+                android:layout_marginBottom="40dp"
+                android:background="@drawable/ly"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.38"
+                app:layout_constraintHorizontal_bias="0.483"
+                android:onClick="btnqd"
                 app:layout_constraintStart_toStartOf="parent" />
+
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 </LinearLayout>
