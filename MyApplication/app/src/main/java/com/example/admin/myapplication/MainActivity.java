@@ -77,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
     private final Handler handler = new Handler();
     private int a=1,b=1;
 
-    public String address="20:F7:7C:85:5E:84";//蓝牙mac地址
+    //public String address="20:F7:7C:85:5E:84";//蓝牙mac地址
+    public String address="00:0E:0E:15:85:04";//蓝牙mac地址
     public UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");//定义UUID
     public BluetoothSocket socket;//定义蓝牙socket
     public OutputStream out;//定义输出流
@@ -364,6 +365,7 @@ public class MainActivity extends AppCompatActivity {
         catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     /**

@@ -16,13 +16,14 @@ public class MainActivity_2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_2);
-        initView();
+        //initView();
+
         new Thread() {
             @Override
             public void run() {
                 super.run();
                 try {
-                    Thread.sleep(18000);//休眠3秒
+                    Thread.sleep(3000);//休眠3秒
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -32,16 +33,13 @@ public class MainActivity_2 extends AppCompatActivity {
                 finish();
             }
         }.start();
-
-
     }
 
-    private void initView() {
-        VideoView vv = (VideoView) findViewById(R.id.videoView2);
-        //设置播放加载路径
-        vv.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video));
-        //播放
-        vv.start();
-        //循环播放
-    }
+//    private void initView() {
+//        VideoView vv = (VideoView) findViewById(R.id.videoView2);
+//        //设置播放加载路径
+//        vv.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video));
+//        //播放
+//        vv.start();
+//    }
 }
