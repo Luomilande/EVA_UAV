@@ -44,6 +44,7 @@
                 android:layout_centerInParent="true"
                 android:progressDrawable="@drawable/ym_seekbar"
                 android:thumbOffset="0dp"
+                android:max="1000"
                 android:thumb="@null">
 
             </com.example.admin.myapplication.VerticalSeekBar>
@@ -131,8 +132,18 @@
                 android:layout_height="50dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:onClick="btnly"
-                android:background="@drawable/fly" />
+                android:background="@drawable/fly_no"
+                android:onClick="btnly" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="259dp"
+                android:layout_marginBottom="8dp"
+                android:text="TextView" />
         </RelativeLayout>
 
         <LinearLayout

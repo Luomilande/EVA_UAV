@@ -24,6 +24,8 @@ public class MainActivity_2 extends AppCompatActivity {
                 super.run();
                 try {
                     Thread.sleep(3000);//休眠3秒
+                    //Thread.sleep(18000);//休眠18秒
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

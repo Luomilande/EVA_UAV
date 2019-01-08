@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
@@ -26,6 +27,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -38,73 +40,52 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.Random;
-/**
- *                             _ooOoo_
- *                            o8888888o
- *                            88" . "88
- *                            (| -_- |)
- *                            O\  =  /O
- *                         ____/`---'\____
- *                       .'  \\|     |//  `.
- *                      /  \\|||  :  |||//  \
- *                     /  _||||| -:- |||||-  \
- *                     |   | \\\  -  /// |   |
- *                     | \_|  ''\---/''  |   |
- *                     \  .-\__  `-`  ___/-. /
- *                   ___`. .'  /--.--\  `. . __
- *                ."" '<  `.___\_<|>_/___.'  >'"".
- *               | | :  `- \`.;`\ _ /`;.`/ - ` : | |
- *               \  \ `-.   \_ __\ /__ _/   .-` /  /
- *          ======`-.____`-.___\_____/___.-`____.-'======
- *                             `=---='
- *          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- *                     佛祖保佑        永无BUG
- *            佛曰:
- *                   写字楼里写字间，写字间里程序员；
- *                   程序人员写程序，又拿程序换酒钱。
- *                   酒醒只在网上坐，酒醉还来网下眠；
- *                   酒醉酒醒日复日，网上网下年复年。
- *                   但愿老死电脑间，不愿鞠躬老板前；
- *                   奔驰宝马贵者趣，公交自行程序员。
- *                   别人笑我忒疯癫，我笑自己命太贱；
- *                   不见满街漂亮妹，哪个归得程序员？
- */
+
 
 public class MainActivity extends AppCompatActivity {
     MediaPlayer mp;//定义MediaPlayer
     public String info;//记录需要触发语音的类型
-    private boolean run = false;
-    private final Handler handler = new Handler();
-    private int a=1,b=1;
+//    private boolean run = false;
 
+
+//    public  OutputStream out;//定义输出流
+    public static UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");//定义UUID
+//    private final Handler handler = new Handler();
+//    private int a=1,b=1;
+//    private  TextView tipe;
     //public String address="20:F7:7C:85:5E:84";//蓝牙mac地址
-    public String address="00:0E:0E:15:85:04";//蓝牙mac地址
-    public UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");//定义UUID
-    public BluetoothSocket socket;//定义蓝牙socket
-    public OutputStream out;//定义输出流
     public byte[]data=new byte[34];//定义通信数组
-    public void initdata() {//通信数组赋值
-        data[0] = (byte) 0xAA;
-        data[1] = (byte) 0xC0;
-        data[2] = (byte) 0x1C;
+    private VerticalSeekBar verticalSeekBar;
 
-        data[3] = (byte) (300 >> 8);
-        data[4] = (byte) (300 & 0xff);
-        data[31] = (byte) 0x1C;
-        data[32] = (byte) 0x0D;
-        data[33] = (byte) 0x0A;
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initdata();
-       // initrokerview();
+        verticalSeekBar = findViewById(R.id.verticalSeekBar);
+        //verticalSeekBar.setOnSeekBarChangeListener(this);
+        // initrokerview();
         //run = true;
-       //handler.postDelayed(task, 3000);
+        //handler.postDelayed(task, 3000);
+        verticalSeekBar.setOnSeekBarChangeListener(new VerticalSeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(VerticalSeekBar VerticalBar, int progress, boolean fromUser) {
+                System.out.println("当前值为:"+progress);
+                Initialization.initial.speed=progress;
+            }
 
+            @Override
+            public void onStartTrackingTouch(VerticalSeekBar VerticalBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(VerticalSeekBar VerticalBar) {
+
+            }
+        });
     }
+
+
 //    private final Runnable task = new Runnable() {
 //        @Override
 //        public void run() {
@@ -224,68 +205,68 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
 
-//    public void initrokerview(){
-//        //找到RockerView控件
-//        RockerView roker=(RockerView) findViewById(R.id.RockerView);
-//        //实时监测摇动方向
-//        roker.setOnShakeListener(DirectionMode.DIRECTION_8, new OnShakeListener() {
-//            //开始摇动时要执行的代码写在本方法里
-//            @Override
-//            public void onStart() {
-//
-//            }
-//            //结束摇动时要执行的代码写在本方法里
-//            @Override
-//            public void onFinish() {
-//                info=null;
-//                //Toast.makeText(MainActivity.this, "已复位", Toast.LENGTH_SHORT).show();
-//            }
-//            //摇动方向时要执行的代码写在本方法里
-//            @Override
-//            public void direction(Direction direction) {
-//                if (direction == RockerView.Direction.DIRECTION_CENTER){
-//                    //tv.setText("中心");
-//                }else if (direction == RockerView.Direction.DIRECTION_DOWN){
-//                    //tv.setText("下");
-//                    if (info!="后")
-//                    {
-//                        info="后";
-//                        init();
-//                    }
-//                }else if (direction == RockerView.Direction.DIRECTION_LEFT){
-//                    //tv.setText("左");
-//                    if (info!="左")
-//                    {
-//                        info="左";
-//                        init();
-//                    }
-//                }else if (direction == RockerView.Direction.DIRECTION_UP){
-//                    //tv.setText("上");
-//                    if (info!="前")
-//                    {
-//                        info="前";
-//                        init();
-//                    }
-//                }else if (direction == RockerView.Direction.DIRECTION_RIGHT){
-//                    //tv.setText("右");
-//                    if (info!="右")
-//                    {
-//                        info="右";
-//                        init();
-//                    }
-//                }else if (direction == RockerView.Direction.DIRECTION_DOWN_LEFT){
-//                    //tv.setText("左下");
-//                }else if (direction == RockerView.Direction.DIRECTION_DOWN_RIGHT){
-//                    //tv.setText("右下");
-//                }else if (direction == RockerView.Direction.DIRECTION_UP_LEFT){
-//                    //tv.setText("左上");
-//                }else if (direction == RockerView.Direction.DIRECTION_UP_RIGHT){
-//                    //tv.setText("右上");
-//                }
-//
-//            }
-//        });
-//    }
+    public void initrokerview(){
+        //找到RockerView控件
+        RockerView roker=(RockerView) findViewById(R.id.RockerView);
+        //实时监测摇动方向
+        roker.setOnShakeListener(DirectionMode.DIRECTION_8, new OnShakeListener() {
+            //开始摇动时要执行的代码写在本方法里
+            @Override
+            public void onStart() {
+
+            }
+            //结束摇动时要执行的代码写在本方法里
+            @Override
+            public void onFinish() {
+                info=null;
+                //Toast.makeText(MainActivity.this, "已复位", Toast.LENGTH_SHORT).show();
+            }
+            //摇动方向时要执行的代码写在本方法里
+            @Override
+            public void direction(Direction direction) {
+                if (direction == RockerView.Direction.DIRECTION_CENTER){
+                    //tv.setText("中心");
+                }else if (direction == RockerView.Direction.DIRECTION_DOWN){
+                    //tv.setText("下");
+                    if (info!="后")
+                    {
+                        info="后";
+                        init();
+                    }
+                }else if (direction == RockerView.Direction.DIRECTION_LEFT){
+                    //tv.setText("左");
+                    if (info!="左")
+                    {
+                        info="左";
+                        init();
+                    }
+                }else if (direction == RockerView.Direction.DIRECTION_UP){
+                    //tv.setText("上");
+                    if (info!="前")
+                    {
+                        info="前";
+                        init();
+                    }
+                }else if (direction == RockerView.Direction.DIRECTION_RIGHT){
+                    //tv.setText("右");
+                    if (info!="右")
+                    {
+                        info="右";
+                        init();
+                    }
+                }else if (direction == RockerView.Direction.DIRECTION_DOWN_LEFT){
+                    //tv.setText("左下");
+                }else if (direction == RockerView.Direction.DIRECTION_DOWN_RIGHT){
+                    //tv.setText("右下");
+                }else if (direction == RockerView.Direction.DIRECTION_UP_LEFT){
+                    //tv.setText("左上");
+                }else if (direction == RockerView.Direction.DIRECTION_UP_RIGHT){
+                    //tv.setText("右上");
+                }
+
+            }
+        });
+    }
 //    public void sxTouch(View view)
 //    {
 //        ImageButton sxbtn= findViewById(R.id.lximgbtn);
@@ -301,71 +282,47 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //    }
 
-    /**
-     * 初始化蓝牙相关操作
-     * 获取蓝牙设备，连接蓝牙
-     */
-    private class ConnectThread implements  Runnable{
-        @Override
-        public void run() {
-            //创建线程
-            BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();//获取蓝牙适配器
-            BluetoothDevice device = adapter.getRemoteDevice(address);//获取蓝牙设备
-            if (device == null) {
-                Log.e("提示","获取蓝牙失败");
-            }
-            try {
-                //连接服务器
-                socket = (BluetoothSocket) device.getClass().getMethod("createRfcommSocket", new Class[]{int.class}).invoke(device, 1);
-                //获取socket
-                socket.connect();
-                //通过输出流发送数据给服务端
-                out = socket.getOutputStream();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.e("提示","连接异常");
-            }
-            //socket=device.createRfcommSocketToServiceRecord(uuid);
-        }
-    }
+
+    public boolean flag=false;
     /**
      * 点击按钮启动线程
      * @param view
      */
     public void  btnqd(View view){
-       // Thread t=new Thread(new ConnectThread());
-       // t.start();
+
         BluetoothAdapter blueadapter=BluetoothAdapter.getDefaultAdapter();
         if (!blueadapter.isEnabled()){
             blueadapter.enable();
             Toast.makeText(getApplicationContext(),"蓝牙状态：未开启",Toast.LENGTH_SHORT).show();
         }else
         {
+           ImageButton imageButton= findViewById(R.id.imgbtnfj);
+            imageButton.setBackgroundResource(R.drawable.fly);
+            flag=true;
             findViewById(R.id.imgbtn_ly).setBackgroundResource(R.drawable.ly_on);
-            new Thread(new ConnectThread()).start();
+            new Thread(new Bluetooth_Conn.ConnectThread()).start();
             Toast.makeText(getApplicationContext(),"开始连接",Toast.LENGTH_SHORT).show();
         }
-
     }
+
 
     /**
      * 点击按钮发送数据
      * @param view
      */
-    public void  btnly(View view){
-        try{
-            out.write(data);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
 
+    public void  btnly(View view){
+        if (flag) {
+            //Thread t = new Thread(new Bluetooth_Conn.SendThread());
+            //t.start();
+            char[] data=DataManage.Behavior((char) Initialization.initial.speed,(char)Initialization.initial.course,(char)Initialization.initial.Rollover,(char)Initialization.initial.pitch);
+            byte[] byteData = DataManage.charToByteArray(data);
+            Toast.makeText(getApplicationContext(),Initialization.initial.speed,Toast.LENGTH_SHORT).show();
+
+        }else
+        {
+            Toast.makeText(getApplicationContext(),"请先连接设备",Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -374,6 +331,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void alert_edit(View view){
         final EditText et = new EditText(this);
+        et.setText("00:0E:0E:15:85:04");
         new AlertDialog.Builder(this).setTitle("蓝牙MAC地址更改:")
                 .setIcon(R.drawable.sz2)
                 .setView(et)
@@ -384,16 +342,34 @@ public class MainActivity extends AppCompatActivity {
                         String telReg="([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}";
                         if (!et.getText().toString().equals("")&&et.getText().toString().matches(telReg))
                         {
-                            address=et.getText().toString();
+                            Initialization.address=et.getText().toString();
                             Toast.makeText(getApplicationContext(),"蓝牙地址更改为:"+et.getText().toString(),Toast.LENGTH_SHORT).show();
                         }else
                         {
                             Toast.makeText(getApplicationContext(),"提示:蓝牙MAC地址格式错误！",Toast.LENGTH_SHORT).show();
-                            //Toast.makeText(getApplicationContext(),"蓝牙地址:取消更改",Toast.LENGTH_SHORT).show();
                         }
-
-                       // Toast.makeText("", et.getText().toString(),Toast.LENGTH_LONG).show();
                     }
                 }).setNegativeButton("取消",null).show();
     }
 }
+//class verticalSeekBar implements SeekBar.OnSeekBarChangeListener{
+//
+//    public verticalSeekBar() {
+//        super();
+//    }
+//
+//    @Override
+//    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+//        System.out.println("当前进度是"+i+";是否来自用户："+b);
+//    }
+//
+//    @Override
+//    public void onStartTrackingTouch(SeekBar seekBar) {
+//        System.out.println("开始拖动");
+//    }
+//
+//    @Override
+//    public void onStopTrackingTouch(SeekBar seekBar) {
+//        System.out.println("脱完了");
+//    }
+//}
