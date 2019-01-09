@@ -24,11 +24,11 @@
 
             <ImageButton
                 android:id="@+id/imageButton2"
-                android:layout_width="60dp"
+                android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
-                android:onClick="btn_info_bc"
-                android:background="@drawable/add" />
+                android:background="@drawable/add"
+                android:onClick="btn_info_bc" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -135,9 +135,8 @@
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/textView6"
-                android:layout_marginStart="27dp"
-                android:layout_toEndOf="@+id/textView6"
+
+                android:layout_centerVertical="true"
                 android:text="俯仰:"
                 android:textColor="#66CD00"
                 android:textStyle="bold" />
@@ -146,9 +145,11 @@
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
+                android:layout_alignTop="@+id/textView5"
+
                 android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="25dp"
+                android:layout_toEndOf="@+id/textView5"
                 android:text="翻滚:"
                 android:textColor="#66CD00"
                 android:textStyle="bold" />
@@ -157,10 +158,25 @@
                 android:id="@+id/textView7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textView5"
+                android:layout_marginEnd="26dp"
+                android:layout_toStartOf="@+id/textView2"
+                android:text="航向:"
+                android:textColor="#66CD00"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_alignTop="@+id/textView5"
+
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="67dp"
-                android:text="航向:"
+                android:layout_marginTop="-1dp"
+                android:layout_marginEnd="25dp"
+                android:text="波动值:"
                 android:textColor="#66CD00"
                 android:textStyle="bold" />
 
@@ -230,18 +246,6 @@
 
                 android:layout_weight="1">
 
-                <ImageButton
-                    android:id="@+id/imgbtn_lock"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/lock_off"
-                    android:onClick="btn_lock" />
-
                 <TextView
                     android:id="@+id/txtqian"
                     android:layout_width="wrap_content"
@@ -250,7 +254,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="68dp"
                     android:layout_marginBottom="31dp"
-                    android:text="前后"
+                    android:text="俯仰"
                     android:textColor="#66CD00"
                     android:textStyle="bold" />
 
@@ -261,9 +265,10 @@
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="130dp"
-                    android:text="左右"
+                    android:text="翻滚"
                     android:textColor="#66CD00"
                     android:textStyle="bold" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -299,14 +304,27 @@
             android:layout_height="match_parent">
 
             <ImageButton
+                android:id="@+id/imgbtn_lock"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/lock_off"
+                android:onClick="btn_lock"
+                app:layout_constraintBottom_toBottomOf="parent"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.666"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageButton
                 android:id="@+id/imgbtnshezhi"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:onClick="alert_edit"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/sz"
+                android:onClick="alert_edit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -315,26 +333,39 @@
                 android:id="@+id/imgbtn_ly"
                 android:layout_width="60dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="28dp"
+
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/ly"
                 android:onClick="btn_qd"
-                app:layout_constraintBottom_toTopOf="@+id/imageButton"
+                app:layout_constraintBottom_toTopOf="@+id/imgbtn_lock"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.714"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/img_btn_jia"
                 android:layout_width="60dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="36dp"
-                android:background="@drawable/qd"
-                android:onClick="btn_send"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/jia"
+                app:layout_constraintBottom_toTopOf="@+id/img_btn_jian"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:onClick="btn_jia"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageButton
+                android:id="@+id/img_btn_jian"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/jian"
+                app:layout_constraintBottom_toTopOf="@+id/imgbtn_ly"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:onClick="btn_jian"
                 app:layout_constraintStart_toStartOf="parent" />
 
         </android.support.constraint.ConstraintLayout>

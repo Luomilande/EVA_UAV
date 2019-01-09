@@ -1,12 +1,16 @@
 package com.example.admin.myapplication;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -47,19 +51,16 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
     MediaPlayer mp;//定义MediaPlayer
     public String info;//记录需要触发语音的类型
-//    private boolean run = false;
-
-
-    //    public  OutputStream out;//定义输出流
     public static UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");//定义UUID
-    //    private final Handler handler = new Handler();
-//    private int a=1,b=1;
     private TextView tipe;
     private TextView qh;
     private TextView zy;
     private TextView fg;
     private TextView hx;
     private TextView fy;
+    private TextView bd;
+    private int wave=Initialization.initial.wave;
+    private BluetoothAdapter mBluetoothAdapter;
     //public String address="00:0E:0E:15:85:04";//蓝牙mac地址
     public byte[] data = new byte[34];//定义通信数组
     private VerticalSeekBar verticalSeekBar;
@@ -75,39 +76,92 @@ public class MainActivity extends AppCompatActivity {
         fg =findViewById(R.id.textView6);
         fy =findViewById(R.id.textView5);
         hx =findViewById(R.id.textView7);
+        bd=findViewById(R.id.textView2);
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         Bluetooth_Conn.tip = findViewById(R.id.txtqian);
         initrokerview();
        SharedPreferences sp=getSharedPreferences("Aircraft_data",MODE_PRIVATE);
         Initialization.initial.course= sp.getInt("course",1500);
         Initialization.initial.pitch= sp.getInt("pitch",1500);
         Initialization.initial.Rollover= sp.getInt("Rollover",1500);
+        Initialization.initial.wave=sp.getInt("wave",5);
 
+        registerBoradcastReceiver();
 
         fy.setText("俯仰:"+Initialization.initial.pitch);
         fg.setText("翻滚:"+Initialization.initial.Rollover);
-        hx.setText("翻滚:"+Initialization.initial.course);
-        //run = true;
-        //handler.postDelayed(task, 3000);
+        hx.setText("航向:"+Initialization.initial.course);
+        bd.setText("波动:"+Initialization.initial.wave);
+
         verticalSeekBar.setOnSeekBarChangeListener(new VerticalSeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(VerticalSeekBar VerticalBar, int progress, boolean fromUser) {
                 tipe.setText("油门：" + progress);
                 Initialization.initial.speed = progress;
             }
-
             @Override
             public void onStartTrackingTouch(VerticalSeekBar VerticalBar) {
 
             }
-
             @Override
             public void onStopTrackingTouch(VerticalSeekBar VerticalBar) {
 
             }
         });
+
+        Bluetooth_Conn.setOnConnect(new Bluetooth_Conn.onConnect() {
+            @Override
+            public void run(boolean flag) {
+
+                new Bluetooth_Conn.SendThread().start();
+            }
+        });
+
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(stateChangeReceiver);
+    }
+    public BroadcastReceiver stateChangeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            //连接成功
+            if (BluetoothDevice.ACTION_ACL_CONNECTED == action) {
+                Toast.makeText(getApplicationContext(), "连接成功！", Toast.LENGTH_SHORT).show();
+            }
+            //断开
+            if (BluetoothDevice.ACTION_ACL_DISCONNECTED == action) {
+                Toast.makeText(getApplicationContext(), "连接断开！", Toast.LENGTH_SHORT).show();
+                Bluetooth_Conn.SendThread kk=  new Bluetooth_Conn.SendThread();
+                kk.setFlag(false);
+            }
+            //关闭
+            if (BluetoothAdapter.ACTION_STATE_CHANGED == action) {
+                Toast.makeText(getApplicationContext(), "连接关闭！", Toast.LENGTH_SHORT).show();
+                Bluetooth_Conn.SendThread kk=  new Bluetooth_Conn.SendThread();
+                kk.setFlag(false);
+                new Thread(new Bluetooth_Conn.ConnectThread()).start();
+            }
+        }
+    };
+    private void registerBoradcastReceiver() {
+        IntentFilter stateChangeFilter = new IntentFilter(
+                BluetoothAdapter.ACTION_STATE_CHANGED);
+        IntentFilter connectedFilter = new IntentFilter(
+                BluetoothDevice.ACTION_ACL_CONNECTED);
+        IntentFilter disConnectedFilter = new IntentFilter(
+                BluetoothDevice.ACTION_ACL_DISCONNECTED);
+
+        registerReceiver(stateChangeReceiver, stateChangeFilter);
+        registerReceiver(stateChangeReceiver, connectedFilter);
+        registerReceiver(stateChangeReceiver, disConnectedFilter);
     }
 
-    //释放播放资源
+    /**
+     * 释放播放资源
+     */
     private void ReleasePlayer() {
         if (mp != null && mp.isPlaying()) {
             mp.stop();
@@ -118,7 +172,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //音频预备以及播放
+    /**
+     * 音频预备以及播放
+     */
     public void init() {
         ReleasePlayer();
         switch (info) {
@@ -156,6 +212,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * 方向遥感
+     */
     public void initrokerview() {
         //找到RockerView控件
         RockerView roker = (RockerView) findViewById(R.id.RockerView);
@@ -187,38 +246,32 @@ public class MainActivity extends AppCompatActivity {
                     Initialization.initial.pitch = Initialization.Aircraft_data.pitch_Small;//向后
                     tipe.setText("" + Initialization.initial.pitch);
                     if (info != "后") {
-                        //info="后";
-                        //init();
-                        // tipe.setText("后");
+                        info="后";
+                        init();
                     }
                 } else if (direction == RockerView.Direction.DIRECTION_LEFT) {
-                    // tipe.setText("左");
                     Initialization.initial.Rollover = Initialization.Aircraft_data.Rollover_Big;//向左
                     tipe.setText("" + Initialization.initial.Rollover);
-
                     if (info != "左") {
-                        //info="左";
-                        //init();
-
+                        info="左";
+                        init();
                         //tipe.setText(Initialization.initial.Rollover);
                     }
                 } else if (direction == RockerView.Direction.DIRECTION_UP) {
-                    //tipe.setText("上");
                     RockerView.DirectionMode.values();
                     Initialization.initial.pitch = Initialization.Aircraft_data.pitch_Big;//向前
                     tipe.setText("" + Initialization.initial.pitch);
                     if (info != "前") {
-//                        info="前";
-//                        init();
+                        info="前";
+                        init();
                     }
 
                 } else if (direction == RockerView.Direction.DIRECTION_RIGHT) {
-                    //tipe.setText("右");
                     Initialization.initial.Rollover = Initialization.Aircraft_data.Rollover_Small;//向右
                     tipe.setText("" + Initialization.initial.Rollover);
                     if (info != "右") {
-//                        info="右";
-//                        init();
+                        info="右";
+                        init();
                     }
                 } else if (direction == RockerView.Direction.DIRECTION_DOWN_LEFT) {
                     //tv.setText("左下");
@@ -233,23 +286,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-//    public void sxTouch(View view)
-//    {
-//        ImageButton sxbtn= findViewById(R.id.lximgbtn);
-//        if (b==1)
-//        {
-//            b++;
-//            sxbtn.setBackgroundResource(R.drawable.shexiang2);
-//        }
-//        else
-//        {
-//            b--;
-//            sxbtn.setBackgroundResource(R.drawable.shexiang);
-//        }
-//    }
 
-
-    public boolean flag = false;
 
     /**
      * 点击按钮启动线程
@@ -259,12 +296,10 @@ public class MainActivity extends AppCompatActivity {
     public void btn_qd(View view) {
         Vibrator vibrator = (Vibrator)this.getSystemService(this.VIBRATOR_SERVICE);
         vibrator.vibrate(1000);
-        BluetoothAdapter blueadapter = BluetoothAdapter.getDefaultAdapter();
-        if (!blueadapter.isEnabled()) {
-            blueadapter.enable();
+        if (!mBluetoothAdapter.isEnabled()) {
+            mBluetoothAdapter.enable();
             Toast.makeText(getApplicationContext(), "蓝牙状态：未开启", Toast.LENGTH_SHORT).show();
         } else {
-            flag = true;
             findViewById(R.id.imgbtn_ly).setBackgroundResource(R.drawable.ly_on);
             new Thread(new Bluetooth_Conn.ConnectThread()).start();
             Toast.makeText(getApplicationContext(), "开始连接", Toast.LENGTH_SHORT).show();
@@ -276,51 +311,27 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void  btn_send(View view){
-        Toast.makeText(getApplicationContext(), "开始发送数据！", Toast.LENGTH_SHORT).show();
-        Vibrator vibrator = (Vibrator)this.getSystemService(this.VIBRATOR_SERVICE);
-        vibrator.vibrate(1000);
-        findViewById(R.id.imageButton).setBackgroundResource(R.drawable.qd_on);
-            Thread t = new Thread(new SendThread());
-            t.start();
-    }
-    public static class SendThread implements Runnable{
-        @Override
-        public void run() {
-            try{
-                while(Initialization.lock_bool){
-                    //速度 and 航向 and 横滚 and 俯仰
-                    System.out.println("油门"+Initialization.initial.speed);
-                    char[] data=DataManage.Behavior((char) Initialization.initial.speed,(char)Initialization.initial.course,(char)Initialization.initial.Rollover,(char)Initialization.initial.pitch);
-                    byte[] byteData = DataManage.charToByteArray(data);
-                    Initialization.out.write(byteData);//发送通信数组给飞机
-                    try {
-                        Thread.sleep(5);//5毫秒发送一次数据
-                    } catch (Exception e) {
-                        break;
-                    }
-                }
-            }
-            catch (Exception e) {
-
-            }
-        }
+           // new Thread(new Bluetooth_Conn.SendThread()).start();
     }
 
     public void btn_lock(View view) {
         Vibrator vibrator = (Vibrator)this.getSystemService(this.VIBRATOR_SERVICE);
         vibrator.vibrate(1000);
+        Bluetooth_Conn.SendThread kk=  new Bluetooth_Conn.SendThread();
             if (Initialization.lock_bool) {
                 ImageButton imageButton_lock = findViewById(R.id.imgbtn_lock);
                 imageButton_lock.setBackgroundResource(R.drawable.lock_on);
                 Initialization.initial.speed=0;
                 tipe.setText("油门:0");
+                verticalSeekBar.setProgress(0);
                 Initialization.lock_bool=false;
+                kk.setFlag(false);
             } else {
                 ImageButton imageButton_lock = findViewById(R.id.imgbtn_lock);
                 imageButton_lock.setBackgroundResource(R.drawable.lock_off);
                 Initialization.lock_bool=true;
-                Thread t = new Thread(new SendThread());
-                t.start();
+                kk.setFlag(true);
+                new Thread(new Bluetooth_Conn.ConnectThread()).start();
             }
     }
 
@@ -328,7 +339,7 @@ public class MainActivity extends AppCompatActivity {
     {
         if (Initialization.initial.Rollover!=3000)
         {
-            Initialization.initial.Rollover+=10;
+            Initialization.initial.Rollover+=Initialization.initial.wave;
             zy.setText("左:"+Initialization.initial.Rollover);
         }
     }
@@ -336,7 +347,7 @@ public class MainActivity extends AppCompatActivity {
     {
         if (Initialization.initial.Rollover!=0)
         {
-            Initialization.initial.Rollover-=10;
+            Initialization.initial.Rollover-=Initialization.initial.wave;
             zy.setText("右:"+Initialization.initial.Rollover);
         }
     }
@@ -344,7 +355,7 @@ public class MainActivity extends AppCompatActivity {
     {
         if (Initialization.initial.pitch!=3000)
         {
-            Initialization.initial.pitch+=10;
+            Initialization.initial.pitch+=Initialization.initial.wave;
             qh.setText("前:"+Initialization.initial.pitch);
         }
     }
@@ -352,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
     {
         if (Initialization.initial.pitch!=0)
         {
-            Initialization.initial.pitch-=10;
+            Initialization.initial.pitch-=Initialization.initial.wave;
             qh.setText("后:"+Initialization.initial.pitch);
         }
     }
@@ -360,14 +371,14 @@ public class MainActivity extends AppCompatActivity {
     {
         if (Initialization.initial.course!=3000)
         {
-            Initialization.initial.course-=10;
+            Initialization.initial.course-=Initialization.initial.wave;
         }
     }
     public void btn_fx_yx(View view)
     {
         if (Initialization.initial.course!=0)
         {
-            Initialization.initial.course+=10;
+            Initialization.initial.course+=Initialization.initial.wave;
         }
     }
     public void btn_info_bc(View view)
@@ -379,11 +390,27 @@ public class MainActivity extends AppCompatActivity {
         spe.putInt("course",Initialization.initial.course);
         spe.putInt("pitch",Initialization.initial.pitch);
         spe.putInt("Rollover",Initialization.initial.Rollover);
+        spe.putInt("wave",Initialization.initial.wave);
         spe.commit();
         fy.setText("俯仰:"+Initialization.initial.pitch);
         fg.setText("翻滚:"+Initialization.initial.Rollover);
         hx.setText("翻滚:"+Initialization.initial.course);
+        bd.setText("波动:"+Initialization.initial.wave);
         Toast.makeText(getApplicationContext(), "保存成功！", Toast.LENGTH_SHORT).show();
+    }
+    public void btn_jia(View view)
+    {
+        Vibrator vibrator = (Vibrator)this.getSystemService(this.VIBRATOR_SERVICE);
+        vibrator.vibrate(1000);
+        Initialization.initial.wave+=1;
+        bd.setText("波动:"+Initialization.initial.wave);
+    }
+    public void btn_jian(View view)
+    {
+        Vibrator vibrator = (Vibrator)this.getSystemService(this.VIBRATOR_SERVICE);
+        vibrator.vibrate(1000);
+        Initialization.initial.wave-=1;
+        bd.setText("波动:"+Initialization.initial.wave);
     }
     /**
      * 设置弹框修改连接蓝牙MAC地址
