@@ -247,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
                         info="前";
                         init();
                     }
+
                 }else if (direction == RockerView.Direction.DIRECTION_RIGHT){
                     //tv.setText("右");
                     if (info!="右")
@@ -313,11 +314,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void  btnly(View view){
         if (flag) {
-            //Thread t = new Thread(new Bluetooth_Conn.SendThread());
-            //t.start();
-            char[] data=DataManage.Behavior((char) Initialization.initial.speed,(char)Initialization.initial.course,(char)Initialization.initial.Rollover,(char)Initialization.initial.pitch);
-            byte[] byteData = DataManage.charToByteArray(data);
-            Toast.makeText(getApplicationContext(),Initialization.initial.speed,Toast.LENGTH_SHORT).show();
+            Thread t = new Thread(new Bluetooth_Conn.SendThread());
+            t.start();
+//            char[] data=DataManage.Behavior((char) Initialization.initial.speed,(char)Initialization.initial.course,(char)Initialization.initial.Rollover,(char)Initialization.initial.pitch);
+//            byte[] byteData = DataManage.charToByteArray(data);
+//            Toast.makeText(getApplicationContext(),Initialization.initial.speed,Toast.LENGTH_SHORT).show();
 
         }else
         {
