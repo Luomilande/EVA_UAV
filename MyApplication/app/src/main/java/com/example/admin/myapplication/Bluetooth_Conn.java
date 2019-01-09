@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class Bluetooth_Conn {
 
+    public   static TextView tip;
     /**
      * 初始化蓝牙相关操作
      * 获取蓝牙设备，连接蓝牙
@@ -52,26 +54,40 @@ public class Bluetooth_Conn {
             //socket=device.createRfcommSocketToServiceRecord(uuid);
         }
     }
-    public static class SendThread implements Runnable{
-
-
-        @Override
-        public void run() {
-            try{
-                while(true){
-                    //速度 and 航向 and 横滚 and 俯仰
-                    char[] data=DataManage.Behavior((char) Initialization.initial.speed,(char)Initialization.initial.course,(char)Initialization.initial.Rollover,(char)Initialization.initial.pitch);
-                    byte[] byteData = DataManage.charToByteArray(data);
-                    Initialization.out.write(byteData);//发送通信数组给飞机
-                    try {
-                        Thread.sleep(5);//5毫秒发送一次数据
-                    } catch (Exception e) {
-                        break;
-                    }
-                }
-            }
-            catch (Exception e) {
-            }
-        }
-    }
+//    public static class SendThread implements Runnable{
+//        @Override
+//        public void run() {
+//            try{
+//                while(true){
+//                    //速度 and 航向 and 横滚 and 俯仰
+//                    char[] data=DataManage.Behavior((char) Initialization.initial.speed,(char)Initialization.initial.course,(char)Initialization.initial.Rollover,(char)Initialization.initial.pitch);
+//                    byte[] byteData = DataManage.charToByteArray(data);
+//                    Initialization.out.write(byteData);//发送通信数组给飞机
+//                    try {
+//                        Thread.sleep(5);//5毫秒发送一次数据
+//                    } catch (Exception e) {
+//                        break;
+//                    }
+//                }
+//            }
+//            catch (Exception e) {
+//
+//            }
+//        }
+//    }
+//    public static class SenTest implements Runnable{
+//
+//
+//        @Override
+//        public void run() {
+//            try{
+//                while(Initialization.lock_bool){
+//                    System.out.println(""+Initialization.initial.speed);
+//                }
+//            }
+//            catch (Exception e) {
+//                System.out.println("线程报错!");
+//            }
+//        }
+//    }
 }

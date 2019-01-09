@@ -3,6 +3,7 @@
     package="com.example.admin.myapplication">
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
@@ -16,8 +17,11 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".MainActivity" android:screenOrientation="landscape">
+        </activity>
+        <activity android:name=".SetupActivity" android:screenOrientation="portrait">
         </activity>
     </application>
 
