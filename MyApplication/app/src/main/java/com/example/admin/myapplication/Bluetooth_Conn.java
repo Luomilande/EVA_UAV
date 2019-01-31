@@ -1,8 +1,10 @@
 package com.example.admin.myapplication;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +29,7 @@ public class Bluetooth_Conn {
      * 获取蓝牙设备，连接蓝牙
      */
     public static class ConnectThread implements Runnable {
+        private static boolean flag=true;
         @Override
                 public void run() {
                     //创建线程
@@ -43,10 +46,15 @@ public class Bluetooth_Conn {
                             Initialization.socket.connect();
                         } catch (IOException e) {
                             Log.e("提示", "socket连接错误");
+                             Looper.prepare();
+                             Toast.makeText(, "toast", Toast.LENGTH_LONG).show();
+                             Looper.loop();
+                            flag=false;
                         }
                         //通过输出流发送数据给服务端
                         Initialization.out = Initialization.socket.getOutputStream();
-                        if(monconnect!=null) monconnect.run(true);
+                        Initialization.inputStream =Initialization.socket.getInputStream();
+                        if(monconnect!=null&&flag) monconnect.run(true);
                         //Toast.makeText(getApplicationContext(),"已连接",Toast.LENGTH_SHORT).show();
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
@@ -80,7 +88,7 @@ public class Bluetooth_Conn {
                         Initialization.out.write(byteData);//发送通信数组给飞机
                         Thread.sleep(500);//5毫秒发送一次数据
                     } catch (Exception e) {
-
+                        flag=false;
                         System.out.println("数据发送出错！");
                     }
                 }

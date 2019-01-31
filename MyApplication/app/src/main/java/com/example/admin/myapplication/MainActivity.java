@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView hx;
     private TextView fy;
     private TextView bd;
-    private int wave=Initialization.initial.wave;
     private BluetoothAdapter mBluetoothAdapter;
     //public String address="00:0E:0E:15:85:04";//蓝牙mac地址
     public byte[] data = new byte[34];//定义通信数组
@@ -80,14 +79,19 @@ public class MainActivity extends AppCompatActivity {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         Bluetooth_Conn.tip = findViewById(R.id.txtqian);
         initrokerview();
-       SharedPreferences sp=getSharedPreferences("Aircraft_data",MODE_PRIVATE);
-        Initialization.initial.course= sp.getInt("course",1500);
-        Initialization.initial.pitch= sp.getInt("pitch",1500);
-        Initialization.initial.Rollover= sp.getInt("Rollover",1500);
-        Initialization.initial.wave=sp.getInt("wave",5);
 
+
+        //读取本地飞行数据值,默认值
+        SharedPreferences sp=getSharedPreferences("Aircraft_data",MODE_PRIVATE);
+        Initialization.Aly_storage.course= sp.getInt("course",1500);
+        Initialization.Aly_storage.pitch= sp.getInt("pitch",1500);
+        Initialization.Aly_storage.Rollover= sp.getInt("Rollover",1500);
+        Initialization.Aly_storage.wave=sp.getInt("wave",5);
+        Initialization.initial.course=Initialization.Aly_storage.course;
+        Restore();
         registerBoradcastReceiver();
-
+        qh.setText("俯仰:"+Initialization.initial.pitch);
+        zy.setText("翻滚:"+Initialization.initial.Rollover);
         fy.setText("俯仰:"+Initialization.initial.pitch);
         fg.setText("翻滚:"+Initialization.initial.Rollover);
         hx.setText("航向:"+Initialization.initial.course);
@@ -101,23 +105,26 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onStartTrackingTouch(VerticalSeekBar VerticalBar) {
-
             }
             @Override
             public void onStopTrackingTouch(VerticalSeekBar VerticalBar) {
 
             }
         });
-
         Bluetooth_Conn.setOnConnect(new Bluetooth_Conn.onConnect() {
             @Override
             public void run(boolean flag) {
-
-                new Bluetooth_Conn.SendThread().start();
+                if (flag)
+                {
+                    new Bluetooth_Conn.SendThread().start();
+                }
             }
         });
-
     }
+
+    /**
+     * 蓝牙监听事件
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -133,16 +140,17 @@ public class MainActivity extends AppCompatActivity {
             }
             //断开
             if (BluetoothDevice.ACTION_ACL_DISCONNECTED == action) {
-                Toast.makeText(getApplicationContext(), "连接断开！", Toast.LENGTH_SHORT).show();
                 Bluetooth_Conn.SendThread kk=  new Bluetooth_Conn.SendThread();
                 kk.setFlag(false);
+                new Thread(new Bluetooth_Conn.ConnectThread()).start();
+                Toast.makeText(getApplicationContext(), "连接断开！正在重新连接。", Toast.LENGTH_SHORT).show();
             }
             //关闭
             if (BluetoothAdapter.ACTION_STATE_CHANGED == action) {
                 Toast.makeText(getApplicationContext(), "连接关闭！", Toast.LENGTH_SHORT).show();
                 Bluetooth_Conn.SendThread kk=  new Bluetooth_Conn.SendThread();
                 kk.setFlag(false);
-                new Thread(new Bluetooth_Conn.ConnectThread()).start();
+//                new Thread(new Bluetooth_Conn.ConnectThread()).start();
             }
         }
     };
@@ -211,7 +219,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     /**
      * 方向遥感
      */
@@ -237,20 +244,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void direction(Direction direction) {
                 if (direction == RockerView.Direction.DIRECTION_CENTER) {
-                    Initialization.initial.pitch = 1500;
-                    Initialization.initial.course = 1500;
-                    Initialization.initial.Rollover = 1500;
-                    tipe.setText("中心");
+                    Restore();
+                    tipe.setText("中心:"+Initialization.initial.Rollover+","+Initialization.initial.pitch+","+Initialization.initial.course);
                 } else if (direction == RockerView.Direction.DIRECTION_DOWN) {
-
-                    Initialization.initial.pitch = Initialization.Aircraft_data.pitch_Small;//向后
+                    Restore();
+                    Initialization.initial.pitch = Initialization.Aly_storage.pitch-150;//向后
                     tipe.setText("" + Initialization.initial.pitch);
                     if (info != "后") {
                         info="后";
                         init();
                     }
                 } else if (direction == RockerView.Direction.DIRECTION_LEFT) {
-                    Initialization.initial.Rollover = Initialization.Aircraft_data.Rollover_Big;//向左
+                    Restore();
+                    Initialization.initial.Rollover = Initialization.Aly_storage.Rollover+150;//向左
                     tipe.setText("" + Initialization.initial.Rollover);
                     if (info != "左") {
                         info="左";
@@ -258,8 +264,9 @@ public class MainActivity extends AppCompatActivity {
                         //tipe.setText(Initialization.initial.Rollover);
                     }
                 } else if (direction == RockerView.Direction.DIRECTION_UP) {
-                    RockerView.DirectionMode.values();
-                    Initialization.initial.pitch = Initialization.Aircraft_data.pitch_Big;//向前
+                    //RockerView.DirectionMode.values();
+                    Restore();
+                    Initialization.initial.pitch = Initialization.Aly_storage.pitch+150;//向前
                     tipe.setText("" + Initialization.initial.pitch);
                     if (info != "前") {
                         info="前";
@@ -267,7 +274,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 } else if (direction == RockerView.Direction.DIRECTION_RIGHT) {
-                    Initialization.initial.Rollover = Initialization.Aircraft_data.Rollover_Small;//向右
+                    Restore();
+                    Initialization.initial.Rollover = Initialization.Aly_storage.Rollover-150;//向右
                     tipe.setText("" + Initialization.initial.Rollover);
                     if (info != "右") {
                         info="右";
@@ -286,8 +294,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
+    //初始化
+    public void Restore()
+    {
+        Initialization.initial.pitch = Initialization.Aly_storage.pitch;
+        Initialization.initial.course = Initialization.Aly_storage.course;
+        Initialization.initial.Rollover = Initialization.Aly_storage.Rollover;
+    }
+    //设置当前值
+    public void Rurrent_state()
+    {
+        Initialization.Aly_storage.pitch= Initialization.initial.pitch;
+        Initialization.Aly_storage.course=Initialization.initial.course;
+        Initialization.Aly_storage.Rollover=Initialization.initial.Rollover;
+    }
     /**
      * 点击按钮启动线程
      *
@@ -295,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void btn_qd(View view) {
         Vibrator vibrator = (Vibrator)this.getSystemService(this.VIBRATOR_SERVICE);
-        vibrator.vibrate(1000);
+        vibrator.vibrate(250);
         if (!mBluetoothAdapter.isEnabled()) {
             mBluetoothAdapter.enable();
             Toast.makeText(getApplicationContext(), "蓝牙状态：未开启", Toast.LENGTH_SHORT).show();
@@ -305,18 +325,13 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "开始连接", Toast.LENGTH_SHORT).show();
         }
     }
-
     /**
-     * 点击按钮发送数据
+     * 发送开关
      * @param view
      */
-    public void  btn_send(View view){
-           // new Thread(new Bluetooth_Conn.SendThread()).start();
-    }
-
     public void btn_lock(View view) {
         Vibrator vibrator = (Vibrator)this.getSystemService(this.VIBRATOR_SERVICE);
-        vibrator.vibrate(1000);
+        vibrator.vibrate(250);
         Bluetooth_Conn.SendThread kk=  new Bluetooth_Conn.SendThread();
             if (Initialization.lock_bool) {
                 ImageButton imageButton_lock = findViewById(R.id.imgbtn_lock);
@@ -331,10 +346,14 @@ public class MainActivity extends AppCompatActivity {
                 imageButton_lock.setBackgroundResource(R.drawable.lock_off);
                 Initialization.lock_bool=true;
                 kk.setFlag(true);
-                new Thread(new Bluetooth_Conn.ConnectThread()).start();
+                new Thread(new Bluetooth_Conn.SendThread()).start();
             }
     }
 
+    /**
+     * 各个方向微调值
+     * @param view
+     */
     public void btn_fx_z(View view)
     {
         if (Initialization.initial.Rollover!=3000)
@@ -384,7 +403,7 @@ public class MainActivity extends AppCompatActivity {
     public void btn_info_bc(View view)
     {
         Vibrator vibrator = (Vibrator)this.getSystemService(this.VIBRATOR_SERVICE);
-        vibrator.vibrate(1000);
+        vibrator.vibrate(250);
         SharedPreferences sp=getSharedPreferences("Aircraft_data",MODE_PRIVATE);
         SharedPreferences.Editor spe=sp.edit();
         spe.putInt("course",Initialization.initial.course);
@@ -392,6 +411,7 @@ public class MainActivity extends AppCompatActivity {
         spe.putInt("Rollover",Initialization.initial.Rollover);
         spe.putInt("wave",Initialization.initial.wave);
         spe.commit();
+        Rurrent_state();
         fy.setText("俯仰:"+Initialization.initial.pitch);
         fg.setText("翻滚:"+Initialization.initial.Rollover);
         hx.setText("翻滚:"+Initialization.initial.course);
@@ -410,6 +430,10 @@ public class MainActivity extends AppCompatActivity {
         Vibrator vibrator = (Vibrator)this.getSystemService(this.VIBRATOR_SERVICE);
         vibrator.vibrate(1000);
         Initialization.initial.wave-=1;
+        if(Initialization.initial.wave<=0)
+        {
+            Initialization.initial.wave=0;
+        }
         bd.setText("波动:"+Initialization.initial.wave);
     }
     /**
